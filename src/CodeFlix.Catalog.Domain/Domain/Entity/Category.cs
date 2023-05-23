@@ -14,13 +14,13 @@ public class Category
     public DateTime CreatedAt { get; private set; }
     
 
-    public Category(string name, string description )
+    public Category(string name, string description, bool isActive = true  )
 
     {
         Id = Guid.NewGuid();
         Name = name;
         Description = description;
-        IsActive = true;
+        IsActive = isActive;
         CreatedAt = DateTime.Now;
     }
 }
