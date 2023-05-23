@@ -7,9 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{18C92064-8A6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{082DAE85-7306-4373-8F7E-11BDE1A628C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeFlix.Catalog.UnitTest", "tests\CodeFlix.Catalog.UnitTest\CodeFlix.Catalog.UnitTest.csproj", "{A0C1C6B1-1320-4846-9C92-D71A89ADA8DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeFlix.Catalog.UnitTest", "tests\CodeFlix.Catalog.UnitTest\CodeFlix.Catalog.UnitTest.csproj", "{A0C1C6B1-1320-4846-9C92-D71A89ADA8DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeFlix.Catalog.Domain", "src\CodeFlix.Catalog.Domain\CodeFlix.Catalog.Domain.csproj", "{6DC7DC80-F553-4484-81C9-56A48E651790}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeFlix.Catalog.Domain", "src\CodeFlix.Catalog.Domain\CodeFlix.Catalog.Domain.csproj", "{6DC7DC80-F553-4484-81C9-56A48E651790}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

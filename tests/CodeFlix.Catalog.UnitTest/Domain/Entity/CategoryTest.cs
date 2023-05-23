@@ -1,11 +1,10 @@
-﻿
+﻿using CodeFlix.Catalog.Domain.Domain.Exceptions;
 
 namespace CodeFlix.Catalog.UnitTest.Domain.Entity;
 public class CategoryTest
 {
     [Fact(DisplayName = nameof(Instantiate))]
     [Trait("Domain", "Category - Aggregates")]
-
 
     public void Instantiate()
     {
@@ -17,7 +16,7 @@ public class CategoryTest
         };
         var dateTimeBefore = DateTime.Now;
         //ACT
-        var category = new DomainEntity(validData.Name, validData.Description);
+        var category = new DomainEntity.Category(validData.Name, validData.Description);
         var dateTimeAfter = DateTime.Now;
 
         // Assert
@@ -31,14 +30,12 @@ public class CategoryTest
         Assert.True( category.IsActive);
     }
 
-
     [Theory(DisplayName = nameof(InstantiateWithActive))]
     [Trait("Domain", "Category - Aggregates")]
     [InlineData(true)]
-
+    
     public void InstantiateWithActive(bool isActive)
     {
-
         Console.WriteLine(isActive);
         // Arrange
         var validData = new
@@ -48,7 +45,7 @@ public class CategoryTest
         };
         var dateTimeBefore = DateTime.Now;
         //ACT
-        var category = new DomainEntity(validData.Name, validData.Description);
+        var category = new DomainEntity.Category(validData.Name, validData.Description);
         var dateTimeAfter = DateTime.Now;
         // Assert
         Assert.NotNull(category);
@@ -59,5 +56,21 @@ public class CategoryTest
         Assert.True(category.CreatedAt > dateTimeBefore);
         Assert.True(category.CreatedAt < dateTimeAfter);
         Assert.Equal(isActive, category.IsActive);
+    }
+
+    [Theory(DisplayName =nameof(InstatiateErrorWhenNameIsEmpty))]
+    [Trait("Domain", "Category - Aggregates")]
+    [InlineData("")]
+    [InlineData(null)]
+    [InlineData("   ")]
+
+
+    public void InstatiateErrorWhenNameIsEmpty(string? name)
+    {
+        Action action = 
+            () => new DomainEntity.Category(name!, "");
+
+       var exception = Assert.Throws<EntityValidationException>( action);
+        Assert.Equal("Name should not be empty or null", exception.Message);
     }
 }
