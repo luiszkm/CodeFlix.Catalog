@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using CodeFlix.Catalog.Domain.Domain.Exceptions;
 namespace CodeFlix.Catalog.Domain.Domain.Entity;
 public class Category
 {
@@ -14,13 +9,23 @@ public class Category
     public DateTime CreatedAt { get; private set; }
     
 
-    public Category(string name, string description )
+    public Category(string name, string description, bool isActive = true  )
 
     {
         Id = Guid.NewGuid();
         Name = name;
         Description = description;
-        IsActive = true;
+        IsActive = isActive;
         CreatedAt = DateTime.Now;
+
+        Validate();
+    }
+
+    public void Validate()
+    {
+        if (String.IsNullOrWhiteSpace(Name))
+        {
+            throw new EntityValidationException($"{nameof(Name)} should not be empty or null");
+        }
     }
 }
