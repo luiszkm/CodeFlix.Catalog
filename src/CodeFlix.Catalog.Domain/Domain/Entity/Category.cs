@@ -1,18 +1,18 @@
 ﻿using CodeFlix.Catalog.Domain.Domain.Exceptions;
+using CodeFlix.Catalog.Domain.Domain.SeedWork;
+
 namespace CodeFlix.Catalog.Domain.Domain.Entity;
-public class Category
+public class Category : AggregateRoot
 {
-    public Guid Id { get; private set; }
     public string Name { get; private set; }
     public string Description { get; private set; }
     public bool  IsActive { get; private set; }
     public DateTime CreatedAt { get; private set; }
     
 
-    public Category(string name, string description, bool isActive = true  )
+    public Category(string name, string description, bool isActive = true  ) : base ()
 
     {
-        Id = Guid.NewGuid();
         Name = name;
         Description = description;
         IsActive = isActive;
@@ -28,6 +28,12 @@ public class Category
     public void Deactivate()
     {
         IsActive = false;
+        Validate();
+    }
+    public void Update(string name, string? description = null)
+    {
+        Name= name;
+        Description= description ?? Description;
         Validate();
     }
     private void Validate()
