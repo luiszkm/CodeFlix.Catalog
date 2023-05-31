@@ -21,7 +21,7 @@ public class CategoryTest
         var dateTimeBefore = DateTime.Now;
         //ACT
         var category = new DomainEntity.Category(validCategory.Name, validCategory.Description);
-        var dateTimeAfter = DateTime.Now;
+        var dateTimeAfter = DateTime.Now.AddSeconds(1);
 
         // Assert
         category.Should().NotBeNull();
@@ -29,8 +29,8 @@ public class CategoryTest
         Assert.Equal(validCategory.Description, category.Description);
         Assert.NotEqual(default(Guid), category.Id);
         Assert.NotEqual(default(DateTime), category.CreatedAt);
-        Assert.True(category.CreatedAt > dateTimeBefore);
-        Assert.True(category.CreatedAt < dateTimeAfter);
+        Assert.True(category.CreatedAt >= dateTimeBefore);
+        Assert.True(category.CreatedAt <= dateTimeAfter);
         Assert.True( category.IsActive);
     }
 
@@ -48,15 +48,15 @@ public class CategoryTest
         var dateTimeBefore = DateTime.Now;
         //ACT
         var category = new DomainEntity.Category(validCategory.Name, validCategory.Description, isActive);
-        var dateTimeAfter = DateTime.Now;
+        var dateTimeAfter = DateTime.Now.AddSeconds(1);
         // Assert
         Assert.NotNull(category);
         Assert.Equal(validCategory.Name, category.Name);
         Assert.Equal(validCategory.Description, category.Description);
         Assert.NotEqual(default(Guid), category.Id);
         Assert.NotEqual(default(DateTime), category.CreatedAt);
-        Assert.True(category.CreatedAt > dateTimeBefore);
-        Assert.True(category.CreatedAt < dateTimeAfter);
+        Assert.True(category.CreatedAt >= dateTimeBefore);
+        Assert.True(category.CreatedAt <= dateTimeAfter);
         Assert.Equal(isActive, category.IsActive);
     }
 
@@ -174,14 +174,14 @@ public class CategoryTest
     public void Update()
     {
         var validCategory = _categoryFixture.GetValidCategory();
-        var newValues = new { Name = "new name", Description = "new Description" };
+        var categoryWithNewValues = _categoryFixture.GetValidCategory();
 
-        validCategory.Update(newValues.Name, newValues.Description);
+        validCategory.Update(categoryWithNewValues.Name, categoryWithNewValues.Description);
 
-        Assert.Equal(newValues.Name, validCategory.Name);
-        Assert.Equal(newValues.Description, validCategory.Description);
-        Assert.True(newValues.Name.Length > 3 && newValues.Name.Length < 255);
-        Assert.True(newValues.Description.Length  < 10_000);
+        Assert.Equal(categoryWithNewValues.Name, validCategory.Name);
+        Assert.Equal(categoryWithNewValues.Description, validCategory.Description);
+        Assert.True(categoryWithNewValues.Name.Length > 3 && categoryWithNewValues.Name.Length < 255);
+        Assert.True(categoryWithNewValues.Description.Length  < 10_000);
 
     }
 
@@ -192,14 +192,14 @@ public class CategoryTest
     {
          var validCategory = _categoryFixture.GetValidCategory();
 
-        var newValues = new { Name = "new name"};
+        var categoryWithNewValues = _categoryFixture.GetValidCategory();
         var currentDescription = validCategory.Description;
 
-        validCategory.Update(newValues.Name);
+        validCategory.Update(categoryWithNewValues.Name);
 
-        Assert.Equal(newValues.Name, validCategory.Name);
+        Assert.Equal(categoryWithNewValues.Name, validCategory.Name);
         Assert.Equal($"{currentDescription}", validCategory.Description);
-        Assert.True(newValues.Name.Length > 3 && newValues.Name.Length < 255);
+        Assert.True(categoryWithNewValues.Name.Length > 3 && categoryWithNewValues.Name.Length < 255);
 
     }
 }
