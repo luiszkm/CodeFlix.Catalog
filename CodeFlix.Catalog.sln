@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeFlix.Catalog.UnitTest",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeFlix.Catalog.Domain", "src\CodeFlix.Catalog.Domain\CodeFlix.Catalog.Domain.csproj", "{6DC7DC80-F553-4484-81C9-56A48E651790}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeFlix.Catalog.Application", "src\CodeFlix.Catalog.Application\CodeFlix.Catalog.Application.csproj", "{13750E35-EE49-4E4F-BC9A-0F96A855FE2C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{6DC7DC80-F553-4484-81C9-56A48E651790}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DC7DC80-F553-4484-81C9-56A48E651790}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DC7DC80-F553-4484-81C9-56A48E651790}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13750E35-EE49-4E4F-BC9A-0F96A855FE2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13750E35-EE49-4E4F-BC9A-0F96A855FE2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13750E35-EE49-4E4F-BC9A-0F96A855FE2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13750E35-EE49-4E4F-BC9A-0F96A855FE2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{A0C1C6B1-1320-4846-9C92-D71A89ADA8DD} = {082DAE85-7306-4373-8F7E-11BDE1A628C2}
 		{6DC7DC80-F553-4484-81C9-56A48E651790} = {18C92064-8A6D-4B40-9270-FDD440EA6B37}
+		{13750E35-EE49-4E4F-BC9A-0F96A855FE2C} = {18C92064-8A6D-4B40-9270-FDD440EA6B37}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {06667154-1298-457A-92E2-D6B7A34692E9}
