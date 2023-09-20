@@ -74,6 +74,8 @@ public class CreateCategoryTest
             unitOfWorkMock.Object
             );
       //  var input = _fixture.Ge
+        Console.WriteLine(input.Name);
+
 
 
     }
