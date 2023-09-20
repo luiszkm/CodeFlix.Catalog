@@ -3,32 +3,31 @@ using DomainEntity = CodeFlix.Catalog.Domain.Domain.Entity;
 using CodeFlix.Catalog.Domain.Domain.Repository;
 
 namespace CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
-public class CreateCategory : ICreateCategory
+public class CreateCategory
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateCategory(
                ICategoryRepository categoryRepository,
-               IUnitOfWork unitOfWork
-        )
+               IUnitOfWork unitOfWork)
     {
         _categoryRepository = categoryRepository;
         _unitOfWork = unitOfWork;
     }
 
-   public async Task<CreateCategoryOutput> Handle(
-       CreateCategoryInput input,
-       CancellationToken cancellationToken)
+    public async Task<CreateCategoryOutput> Handle(
+        CreateCategoryInput input,
+        CancellationToken cancellationToken)
     {
         var category = new DomainEntity.Category(
-            input.Name, 
-            input.Description!, 
+            input.Name,
+            input.Description!,
             input.IsActive
             );
 
-      await _categoryRepository.Insert(category, cancellationToken);
-      await  _unitOfWork.Commit(cancellationToken);
+        await _categoryRepository.Insert(category, cancellationToken);
+        await _unitOfWork.Commit(cancellationToken);
         return new CreateCategoryOutput(
             category.Id,
             category.Name,
@@ -37,6 +36,6 @@ public class CreateCategory : ICreateCategory
             category.CreatedAt
             );
     }
-    
-    
+
+
 }

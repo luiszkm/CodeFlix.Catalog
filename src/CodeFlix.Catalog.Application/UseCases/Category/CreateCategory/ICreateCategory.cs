@@ -1,5 +1,7 @@
-﻿namespace CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
-public interface ICreateCategory
+﻿using CodeFlix.Catalog.Domain.Domain.SeedWork;
+
+namespace CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
+public interface ICreateCategory : IRepository
 {
     public Task<CreateCategoryOutput> Handle(
         CreateCategoryInput input,
