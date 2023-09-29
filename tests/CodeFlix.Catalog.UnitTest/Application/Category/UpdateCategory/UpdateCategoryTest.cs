@@ -66,7 +66,7 @@ public class UpdateCategoryTest
                     It.IsAny<CancellationToken>()),
             Times.Once);
     }
-
+//infrastructure adapters
     [Fact(DisplayName = nameof(ThrowWhenCategoryDoesNotExist))]
     [Trait("Category", "Update Category - UseCase")]
     public async Task ThrowWhenCategoryDoesNotExist()
