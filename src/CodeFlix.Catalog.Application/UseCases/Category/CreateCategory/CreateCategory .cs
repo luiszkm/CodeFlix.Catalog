@@ -1,9 +1,9 @@
 ﻿using CodeFlix.Catalog.Application.Interfaces;
-using DomainEntity = CodeFlix.Catalog.Domain.Domain.Entity;
+using CodeFlix.Catalog.Application.UseCases.Category.Common;
 using CodeFlix.Catalog.Domain.Domain.Repository;
 
 namespace CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
-public class CreateCategory
+public class CreateCategory : ICreateCategory
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -16,7 +16,7 @@ public class CreateCategory
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<CreateCategoryOutput> Handle(
+    public async Task<CategoryModelOutput> Handle(
         CreateCategoryInput input,
         CancellationToken cancellationToken)
     {
@@ -28,13 +28,7 @@ public class CreateCategory
 
         await _categoryRepository.Insert(category, cancellationToken);
         await _unitOfWork.Commit(cancellationToken);
-        return new CreateCategoryOutput(
-            category.Id,
-            category.Name,
-            category.Description,
-            category.IsActive,
-            category.CreatedAt
-            );
+        return CategoryModelOutput.FromCategory(category);
     }
 
 

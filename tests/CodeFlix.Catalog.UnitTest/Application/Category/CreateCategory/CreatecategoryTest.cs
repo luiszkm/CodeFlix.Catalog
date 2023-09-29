@@ -1,7 +1,7 @@
 ﻿using CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
 using CodeFlix.Catalog.Domain.Domain.Exceptions;
 using Moq;
-
+using UseCases = CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
 
 namespace CodeFlix.Catalog.UnitTest.Application.Category.CreateCategory;
 

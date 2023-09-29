@@ -6,11 +6,14 @@ using Moq;
 
 
 namespace FC.Codeflix.Catalog.UnitTests.Application.Category.Common;
+
+
+
 public abstract class CategoryUseCasesBaseFixture
     : BaseFixture
 {
 
-    public Mock<ICategoryRepository> GetRepositoryMock()
+    public Mock<ICategoryRepository> GetCategoryRepositoryMock()
         => new();
 
     public Mock<IUnitOfWork> GetUnitOfWorkMock()
@@ -33,8 +36,10 @@ public abstract class CategoryUseCasesBaseFixture
         if (categoryDescription.Length > 10_000)
             categoryDescription =
                 categoryDescription[..10_000];
-        return categoryDescription; 
+        return categoryDescription;
     }
+
+
 
     public DomainEntity.Category GetExampleCategory()
         => new(
