@@ -219,7 +219,7 @@ public class UpdateCategoryTest
         UseCase.UpdateCategoryInput input,
         string exceptionMessage)
     {
-        var exampleCategory = _fixture.GetValidCategory();
+        var exampleCategory = _fixture.GetExampleCategory();
         input.Id = exampleCategory.Id;
         var repositoryMock = _fixture.GetCategoryRepositoryMock();
         var unitOfWorkMock = _fixture.GetUnitOfWorkMock();

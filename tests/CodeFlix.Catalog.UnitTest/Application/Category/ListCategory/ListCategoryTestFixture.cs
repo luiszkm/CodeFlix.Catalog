@@ -1,7 +1,10 @@
 ﻿
+using CodeFlix.Catalog.Application.UseCases.Category.ListCategories;
 using CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory;
 using CodeFlix.Catalog.Domain.Domain.Repository;
+using CodeFlix.Catalog.Domain.Domain.SeedWork.SearchableRepository;
 using CodeFlix.Catalog.UnitTest.Common;
+using FC.Codeflix.Catalog.UnitTests.Application.Category.Common;
 using Moq;
 
 namespace CodeFlix.Catalog.UnitTest.Application.Category.ListCategory;
@@ -11,38 +14,8 @@ public class ListCategoryTestFixtureCollection :
     ICollectionFixture<ListCategoryTestFixture>
 { }
 
-public class ListCategoryTestFixture : BaseFixture
+public class ListCategoryTestFixture : CategoryUseCasesBaseFixture
 {
-
-    public string GetValidCategoryName()
-    {
-        var categoryName = "";
-        while (categoryName.Length < 3)
-        {
-            categoryName = Faker.Commerce.Categories(1)[0];
-        }
-        if (categoryName.Length > 255)
-        {
-            categoryName = categoryName[..255];
-        }
-        return categoryName;
-    }
-
-    public string GetValidCategoryDescription()
-    {
-        var categoryDescription = Faker.Commerce.ProductDescription();
-        if (categoryDescription.Length > 10_000)
-        {
-            categoryDescription = categoryDescription[..10_000];
-        }
-
-        return categoryDescription;
-    }
-
-    public bool GetRandomBoolean()
-    {
-        return Faker.Random.Bool();
-    }
 
 
     public DomainEntity.Category GetValidCategory()
@@ -73,9 +46,19 @@ public class ListCategoryTestFixture : BaseFixture
         return list;
     }
 
-    public Mock<ICategoryRepository> GetCategoryRepositoryMock()
-      => new();
 
+    public ListCategoriesInput GetExampleInput()
+    {
+        var random = new Random();
+        var result = new ListCategoriesInput(
+            page: random.Next(1, 10),
+            perPage: random.Next(1, 100),
+            search: Faker.Commerce.ProductName(),
+            sort: Faker.Commerce.ProductName(),
+            dir: random.Next(0, 10) > 5 ? SearchOrder.Asc : SearchOrder.Desc
+        );
+        return result;
+    }
 
 
 }
