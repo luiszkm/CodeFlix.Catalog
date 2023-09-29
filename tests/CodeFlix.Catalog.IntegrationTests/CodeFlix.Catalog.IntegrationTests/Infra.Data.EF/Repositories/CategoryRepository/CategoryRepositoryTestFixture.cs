@@ -1,6 +1,12 @@
-﻿
+﻿using CodeFlix.Catalog.IntegrationTests.Base;
 
 namespace CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.CategoryRepository;
-partial class CategoryRepositoryTestFixture
+
+[CollectionDefinition(nameof(CategoryRepositoryTestFixture))]
+public class CategoryRepositoryTestFixtureCollection : ICollectionFixture<CategoryRepositoryTestFixture>
+{ }
+
+partial class CategoryRepositoryTestFixture : BaseFixture
 {
+
 }
