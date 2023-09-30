@@ -15,7 +15,7 @@
 sonar.sh
 # Mono auto generated files
 mono_crash.*
-
+coveragereport
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
