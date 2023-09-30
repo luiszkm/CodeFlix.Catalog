@@ -18,6 +18,9 @@ jobs:
         with:
           dotnet-version: '7.0.x'
           
+      - name: Install SonarScanner
+        run: dotnet tool install --global dotnet-sonarscanner
+
       - name: Install Coverlet
         run: dotnet tool install -g coverlet.console
 
