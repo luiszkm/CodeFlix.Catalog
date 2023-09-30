@@ -1,9 +1,9 @@
 name: Build
 on:
-  # push:
-  #   branches: [ "develope", "ci/sonar" ]
+  push:
+    branches: [ "develope", "ci/sonar" ]
   pull_request:
-    branches: [ "develope" ]
+    branches: [ "develope", "main" ]
 
 jobs:
   sonarcloud:
