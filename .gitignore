@@ -9,13 +9,13 @@
 *.user
 *.userosscache
 *.sln.docstates
-
+.vscode
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
-
+sonar.sh
 # Mono auto generated files
 mono_crash.*
-
+coveragereport
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

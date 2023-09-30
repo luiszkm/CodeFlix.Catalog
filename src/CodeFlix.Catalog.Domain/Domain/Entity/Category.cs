@@ -6,11 +6,11 @@ public class Category : AggregateRoot
 {
     public string Name { get; private set; }
     public string Description { get; private set; }
-    public bool  IsActive { get; private set; }
+    public bool IsActive { get; private set; }
     public DateTime CreatedAt { get; private set; }
-    
 
-    public Category(string name, string description, bool isActive = true  ) : base ()
+
+    public Category(string name, string description, bool isActive = true) : base()
 
     {
         Name = name;
@@ -19,9 +19,10 @@ public class Category : AggregateRoot
         CreatedAt = DateTime.Now;
 
         Validate();
-      
+
     }
-     public void Activate() {
+    public void Activate()
+    {
         IsActive = true;
         Validate();
     }
@@ -32,17 +33,17 @@ public class Category : AggregateRoot
     }
     public void Update(string name, string? description = null)
     {
-        Name= name;
-        Description= description ?? Description;
+        Name = name;
+        Description = description ?? Description;
         Validate();
     }
     private void Validate()
-    {   
+    {
         if (String.IsNullOrWhiteSpace(Name))
         {
             throw new EntityValidationException($"{nameof(Name)} should not be empty or null");
         }
-        if(Name.Length < 3)
+        if (Name.Length < 3)
         {
             throw new EntityValidationException($"{nameof(Name)} should be at 3 characters long");
 
@@ -55,11 +56,12 @@ public class Category : AggregateRoot
         }
         if (Description == null)
         {
-            throw new EntityValidationException($"{nameof(Description)} should not be empty or null");
+            throw new EntityValidationException($"{nameof(Description)} should not be null");
         }
 
-        if (Description.Length > 10_000) {
-            throw new EntityValidationException($"{nameof(Description)} should be less or equal 10_000 characters long");
+        if (Description.Length > 10_000)
+        {
+            throw new EntityValidationException($"{nameof(Description)} should be less or equal 10000 characters long");
         }
     }
 }

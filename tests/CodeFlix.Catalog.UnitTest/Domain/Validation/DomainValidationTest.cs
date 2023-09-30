@@ -7,14 +7,14 @@ public class DomainValidationTest
 {
     private Faker Faker { get; set; } = new Faker();
 
-    [Fact (DisplayName = nameof(NotNullOk))]
+    [Fact(DisplayName = nameof(NotNullOk))]
     [Trait("Domain", "DomainValidation - Validation")]
 
     public void NotNullOk()
     {
         var value = Faker.Commerce.ProductName();
-       Action action =
-            ()=> DomainValidation.NotNull(value, "value");
+        Action action =
+             () => DomainValidation.NotNull(value, "value");
         action.Should().NotThrow();
     }
 
@@ -27,7 +27,7 @@ public class DomainValidationTest
         Action action =
              () => DomainValidation.NotNull(value, "fieldName");
         action.Should().Throw<EntityValidationException>()
-            .WithMessage("fieldName should not be empty or null");
+            .WithMessage("fieldName should not be null");
     }
 
     [Theory(DisplayName = nameof(NotNullOrEmptyThrowWhenEmpty))]
@@ -36,7 +36,7 @@ public class DomainValidationTest
     [InlineData(null)]
     [InlineData("     ")]
 
-    public  void NotNullOrEmptyThrowWhenEmpty(string? target)
+    public void NotNullOrEmptyThrowWhenEmpty(string? target)
     {
         Action action =
             () => DomainValidation.NotNullOrEmpty(target, "fieldName");
@@ -47,7 +47,7 @@ public class DomainValidationTest
 
     [Fact(DisplayName = nameof(NotNullOrEmptyOk))]
     [Trait("Domain", "DomainValidation - Validation")]
-   
+
 
     public void NotNullOrEmptyOk()
     {
@@ -65,7 +65,7 @@ public class DomainValidationTest
     public void MinLengthThrowWhenLess(string target, int minLength)
     {
         Action action =
-            () => DomainValidation.MinLength(target, minLength , "fieldName");
+            () => DomainValidation.MinLength(target, minLength, "fieldName");
         action.Should().Throw<EntityValidationException>()
         .WithMessage($"fieldName should be at {minLength} characters long");
     }
@@ -86,7 +86,7 @@ public class DomainValidationTest
 
     [Fact(DisplayName = nameof(MaxLengthThrowWhenGreater))]
     [Trait("Domain", "DomainValidation - Validation")]
-    
+
 
     public void MaxLengthThrowWhenGreater()
     {
