@@ -1,7 +1,7 @@
 name: Build
 on:
   push:
-    branches: [ "develope", "ci/sonar" ]
+    branches: [ "develope", ]
   pull_request:
     branches: [ "develope", "main" ]
 
@@ -36,3 +36,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          
+      - run: |
+          dotnet-sonarscanner begin /k:"luiszkm_CodeFlix.Catalog" /o:"colin-sonarsource" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          dotnet build
+          dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
