@@ -28,6 +28,9 @@ jobs:
           coverlet "./tests/CodeFlix.Catalog.UnitTest/bin/Debug/net7.0/CodeFlixCatalog.UnitTest.dll" --target "dotnet" --targetargs "test --no-build" --format opencover --output=coverage_UnitTest.xml
           coverlet "./tests/CodeFlix.Catalog.IntegrationTests/bin/Debug/net7.0/CodeFlix.Catalog.IntegrationTests.dll" --target "dotnet" --targetargs "test --no-build" --format opencover --output=coverage_IntegrationTests.xml
 
+      - name: Merge coverage resports
+        run: cat coverage_UnitTest.xml coverage_IntegrationTests.xml > coverage.xml
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
