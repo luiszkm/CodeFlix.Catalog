@@ -46,8 +46,17 @@ public class CategoryRepository : ICategoryRepository
     public async Task Delete(Category aggregate, CancellationToken _)
         => Task.FromResult(_categories.Remove(aggregate));
 
-    public Task<SearchOutput<Category>> Search(SearchInput input, CancellationToken cancellationToken)
+    public async Task<SearchOutput<Category>> Search(SearchInput input, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var toSkip = (input.Page - 1) * input.PerPage;
+        var total = await _categories.CountAsync(cancellationToken);
+        var items = await _categories.AsNoTracking()
+            .Skip(toSkip)
+            .Take(input.PerPage)
+            .ToListAsync();
+
+
+        return new(input.Page, input.PerPage, total, items);
     }
+
 }
