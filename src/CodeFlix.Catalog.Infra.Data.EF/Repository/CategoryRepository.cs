@@ -1,4 +1,5 @@
 ﻿
+using CodeFlix.Catalog.Application.Exceptions;
 using CodeFlix.Catalog.Domain.Domain.Entity;
 using CodeFlix.Catalog.Domain.Domain.Repository;
 using CodeFlix.Catalog.Domain.Domain.SeedWork.SearchableRepository;
@@ -24,20 +25,26 @@ public class CategoryRepository : ICategoryRepository
 
 
 
-    public Task<Category> Get(Guid id, CancellationToken cancellationToken)
+    public async Task<Category> Get(Guid id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var category = await _categories.AsNoTracking()
+            .FirstOrDefaultAsync(
+             c => c.Id == id,
+             cancellationToken);
+
+        NotFoundException.ThrowIfNull(category, $"Category '{id}' not found.");
+
+        return category!;
     }
 
-    public Task Update(Category aggregate, CancellationToken cancellationToken)
+    public async Task Update(Category aggregate, CancellationToken _)
     {
-        throw new NotImplementedException();
+        _categories.Update(aggregate);
+        await Task.CompletedTask;
     }
 
-    public Task Delete(Category aggregate, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task Delete(Category aggregate, CancellationToken _)
+        => Task.FromResult(_categories.Remove(aggregate));
 
     public Task<SearchOutput<Category>> Search(SearchInput input, CancellationToken cancellationToken)
     {
