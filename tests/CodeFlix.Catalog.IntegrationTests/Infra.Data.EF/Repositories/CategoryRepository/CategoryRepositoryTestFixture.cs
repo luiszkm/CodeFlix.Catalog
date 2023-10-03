@@ -49,6 +49,14 @@ public class CategoryRepositoryTestFixture : BaseFixture
             .Select(_ => GetExampleCategory())
             .ToList();
 
+    public List<DomainEntity.Category> GetExampleCategoriesListWithNames(List<string> names)
+        => names.Select(name =>
+        {
+            var category = GetExampleCategory();
+            category.Update(name);
+            return category;
+        }).ToList();
+
     public CodeflixCatalogDbContext CreateDbContext(bool preserverData = false)
     {
         var dbContext = new CodeflixCatalogDbContext(
