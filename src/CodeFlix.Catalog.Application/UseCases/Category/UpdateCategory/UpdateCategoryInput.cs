@@ -9,7 +9,7 @@ public class UpdateCategoryInput : IRequest<CategoryModelOutput>
         Guid id,
         string name,
         string? description = null,
-        bool? isActive = true)
+        bool? isActive = null)
     {
         Id = id;
         Name = name;

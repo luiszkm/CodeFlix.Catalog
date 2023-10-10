@@ -1,6 +1,5 @@
 ﻿
 using CodeFlix.Catalog.Domain.Domain.SeedWork.SearchableRepository;
-using CodeFlix.Catalog.Infra.Data.EF;
 using CodeFlix.Catalog.IntegrationTests.Base;
 
 namespace CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.CategoryRepository;
@@ -76,20 +75,6 @@ public class CategoryRepositoryTestFixture : BaseFixture
         };
 
         return orderedEnumerable.ToList();
-    }
-
-
-    public CodeflixCatalogDbContext CreateDbContext(bool preserverData = false)
-    {
-        var dbContext = new CodeflixCatalogDbContext(
-            new DbContextOptionsBuilder<CodeflixCatalogDbContext>()
-                .UseInMemoryDatabase("Integration-testes-db")
-                .Options
-                );
-
-        if (preserverData) dbContext.Database.EnsureCreated();
-
-        return dbContext;
     }
 
     public void ClearDatabase()
