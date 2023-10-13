@@ -1,6 +1,5 @@
 using Bogus;
 using CodeFlix.Catalog.Infra.Data.EF;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace CodeFlix.Catalog.E2ETests.Base
 {
@@ -15,14 +14,14 @@ namespace CodeFlix.Catalog.E2ETests.Base
         }
 
         protected Faker Faker { get; set; }
+        public CustomWebApplicationFactory<Program> WebAppFactory { get; set; }
         public ApiClient ApiClient { get; set; }
         public HttpClient HttpClient { get; set; }
-        public CustomWebApplicationFactory<Program> WebAppFactory { get; set; }
-        public CodeflixCatalogDbContext CreateDbContext(bool preserveData = false)
+        public CodeflixCatalogDbContext CreateApiDbContext()
         {
             var context = new CodeflixCatalogDbContext(
                 new DbContextOptionsBuilder<CodeflixCatalogDbContext>()
-                    .UseInMemoryDatabase("e2e-tests-db")
+                    .UseInMemoryDatabase("e2e-test-db")
                     .Options
             );
 

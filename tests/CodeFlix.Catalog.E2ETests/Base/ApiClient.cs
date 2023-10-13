@@ -6,31 +6,94 @@ namespace CodeFlix.Catalog.E2ETests.Base;
 public class ApiClient
 {
     private readonly HttpClient _httpClient;
-
+    private readonly JsonSerializerOptions _defaultSerializeOptions;
     public ApiClient(HttpClient httpClient)
     {
         _httpClient = httpClient;
+        _defaultSerializeOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            PropertyNameCaseInsensitive = true
+        };
+    }
+
+    public async Task<(HttpResponseMessage?, TOutput?)>
+        Post<TOutput>(
+            string route,
+            object payload
+        ) where TOutput : class
+    {
+        var payloadJson = JsonSerializer.Serialize(
+            payload,
+            _defaultSerializeOptions);
+
+        var response = await _httpClient.PostAsync(
+            route,
+            new StringContent(
+                payloadJson,
+                Encoding.UTF8,
+                "application/json"));
+        var output = await GetOutput<TOutput>(response);
+        return (response, output);
+    }
+
+    public async Task<(HttpResponseMessage?, TOutput?)>
+        Get<TOutput>(
+        string route
+    ) where TOutput : class
+    {
+        var response = await _httpClient.GetAsync(route);
+        var output = await GetOutput<TOutput>(response);
+
+        return (response, output);
+    }
+
+    public async Task<(HttpResponseMessage?, TOutput?)>
+        Put<TOutput>(
+            string route,
+            object payload
+        ) where TOutput : class
+    {
+        var payloadJson = JsonSerializer.Serialize(
+            payload,
+            _defaultSerializeOptions);
+
+        var response = await _httpClient.PutAsync(
+            route,
+            new StringContent(
+                payloadJson,
+                Encoding.UTF8,
+                "application/json"));
+
+        var output = await GetOutput<TOutput>(response);
+        return (response, output);
+    }
+
+    public async Task<(HttpResponseMessage?, TOutput?)>
+        Delete<TOutput>(
+            string route
+        ) where TOutput : class
+    {
+        var response = await _httpClient.DeleteAsync(route);
+        var output = await GetOutput<TOutput>(response);
+
+        return (response, output);
     }
 
 
 
-    public async Task<(HttpResponseMessage response, TOutput?)>
-        Post<TOutput>(
-            string route,
-            object payload
-        )
+    private async Task<TOutput?>
+        GetOutput<TOutput>(HttpResponseMessage response)
+        where TOutput : class
     {
-        var inputString = JsonSerializer.Serialize(payload);
-        var inputContent = new StringContent(inputString, Encoding.UTF8, "application/json");
-
-        var response = await _httpClient.PostAsync(route, inputContent);
-
         var outputString = await response.Content.ReadAsStringAsync();
-        var output = JsonSerializer.Deserialize<TOutput>(
-            outputString,
-            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-        return (response, output);
+        TOutput? output = null;
+        if (!string.IsNullOrWhiteSpace(outputString))
+            output = JsonSerializer.Deserialize<TOutput>(
+                outputString,
+                _defaultSerializeOptions
+            );
+        return output;
     }
 }
 

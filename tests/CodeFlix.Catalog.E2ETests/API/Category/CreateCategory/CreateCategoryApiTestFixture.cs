@@ -10,10 +10,10 @@ public class CreateCategoryApiTestFixtureCollection :
 { }
 public class CreateCategoryApiTestFixture : CategoryBaseFixture
 {
-    public CreateCategoryInput GetCreateCategoryInput()
+    public CreateCategoryInput GetExampleInput()
         => new(
             GetValidCategoryName(),
             GetValidCategoryDescription(),
             GetRandomBoolean()
-            );
+        );
 }

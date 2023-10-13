@@ -1,4 +1,5 @@
-﻿using CodeFlix.Catalog.E2ETests.Base;
+﻿using CodeFlix.Catalog.E2ETests.API.CreateCategory;
+using CodeFlix.Catalog.E2ETests.Base;
 
 
 namespace CodeFlix.Catalog.E2ETests.API.Category.Common;
@@ -8,7 +9,7 @@ public class CategoryBaseFixture : BaseFixture
 
     public CategoryBaseFixture() : base()
     {
-        Persistence = new CategoryPersistence(CreateDbContext());
+        Persistence = new CategoryPersistence(CreateApiDbContext());
     }
 
     public string GetValidCategoryName()
@@ -45,6 +46,25 @@ public class CategoryBaseFixture : BaseFixture
             GetRandomBoolean()
 
         );
+    public string GetInvalidNameTooShort()
+        => Faker.Commerce.ProductName().Substring(0, 2);
+
+    public string GetInvalidNameTooLong()
+    {
+        var tooLongNameForCategory = Faker.Commerce.ProductName();
+        while (tooLongNameForCategory.Length <= 255)
+            tooLongNameForCategory = $"{tooLongNameForCategory} {Faker.Commerce.ProductName()}";
+        return tooLongNameForCategory;
+    }
+
+    public string GetInvalidDescriptionTooLong()
+    {
+        var tooLongDescriptionForCategory = Faker.Commerce.ProductDescription();
+        while (tooLongDescriptionForCategory.Length <= 10_000)
+            tooLongDescriptionForCategory = $"{tooLongDescriptionForCategory} {Faker.Commerce.ProductDescription()}";
+        return tooLongDescriptionForCategory;
+    }
+
 
     public List<DomainEntity.Category> GetExampleCategoriesList(int length = 10)
         => Enumerable.Range(1, length)

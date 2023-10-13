@@ -10,9 +10,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.12" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CodeFlix.Catalog.Application\CodeFlix.Catalog.Application.csproj" />
+    <ProjectReference Include="..\CodeFlix.Catalog.Infra.Data.EF\CodeFlix.Catalog.Infra.Data.EF.csproj" />
   </ItemGroup>
 
 </Project>
