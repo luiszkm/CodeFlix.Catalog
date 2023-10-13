@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CodeFlix.Catalog.E2ETests.API.Category.DeleteCategory;
 [Collection(nameof(DeleteCategoryApiTestFixture))]
-public class DeleteCategoryApiTest
+public class DeleteCategoryApiTest : IDisposable
 {
     private readonly DeleteCategoryApiTestFixture _fixture;
 
@@ -61,4 +61,6 @@ public class DeleteCategoryApiTest
         output.Type.Should().Be("Not Found");
         output.Status.Should().Be((int)HttpStatusCode.NotFound);
     }
+    public void Dispose()
+        => _fixture.CleanPersistence();
 }

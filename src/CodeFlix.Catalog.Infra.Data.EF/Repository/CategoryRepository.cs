@@ -71,10 +71,14 @@ public class CategoryRepository : ICategoryRepository
         IQueryable<Category> query,
         string orderBy,
         SearchOrder order)
-        => (orderBy, order) switch
+
+    {
+        var orderQuery = (orderBy, order) switch
         {
-            ("name", SearchOrder.Asc) => query.OrderBy(x => x.Name),
-            ("name", SearchOrder.Desc) => query.OrderByDescending(x => x.Name),
+            ("name", SearchOrder.Asc) => query.OrderBy(x => x.Name)
+                .ThenBy(x => x.CreatedAt),
+            ("name", SearchOrder.Desc) => query.OrderByDescending(x => x.Name)
+                .ThenBy(x => x.CreatedAt),
             ("id", SearchOrder.Asc) => query.OrderBy(x => x.Id),
             ("id", SearchOrder.Desc) => query.OrderByDescending(x => x.Id),
             ("createdAt", SearchOrder.Asc) => query.OrderBy(x => x.CreatedAt),
@@ -82,4 +86,6 @@ public class CategoryRepository : ICategoryRepository
             _ => query.OrderBy(x => x.Name),
         };
 
+        return orderQuery;
+    }
 }

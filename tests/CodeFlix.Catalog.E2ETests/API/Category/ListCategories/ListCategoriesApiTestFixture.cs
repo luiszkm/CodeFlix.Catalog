@@ -1,15 +1,14 @@
-﻿
-using CodeFlix.Catalog.Domain.Domain.SeedWork.SearchableRepository;
-using CodeFlix.Catalog.IntegrationTests.Application.Category.Common;
+﻿using CodeFlix.Catalog.Domain.Domain.SeedWork.SearchableRepository;
+using CodeFlix.Catalog.E2ETests.API.Category.Common;
 
-namespace CodeFlix.Catalog.IntegrationTests.Application.Category.ListCategory;
+namespace CodeFlix.Catalog.E2ETests.API.Category.ListCategories;
 
-[CollectionDefinition(nameof(ListCategoriesTestFixture))]
-public class ListCategoriesTestFixtureCollection
-    : ICollectionFixture<ListCategoriesTestFixture>
+[CollectionDefinition(nameof(ListCategoriesApiTestFixture))]
+public class ListCategoriesApiTestFixtureCollection : ICollectionFixture<ListCategoriesApiTestFixture>
 {
 }
-public class ListCategoriesTestFixture : categoryuseCasesBaseFixture
+
+public class ListCategoriesApiTestFixture : CategoryBaseFixture
 {
     public List<DomainEntity.Category> GetExampleCategoriesListWithNames(
         List<string> names
@@ -41,6 +40,5 @@ public class ListCategoriesTestFixture : categoryuseCasesBaseFixture
             .ThenBy(x => x.CreatedAt)
             .ToList();
     }
-
 }
 

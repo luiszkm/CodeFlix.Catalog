@@ -7,7 +7,7 @@ using CodeFlix.Catalog.E2ETests.API.Category.CreateCategory;
 namespace CodeFlix.Catalog.E2ETests.API.Category.UpdateCategory;
 
 [Collection(nameof(UpdateCategoryApiTestFixture))]
-public class UpdateCategoryApiTest
+public class UpdateCategoryApiTest : IDisposable
 {
     private readonly UpdateCategoryApiTestFixture _fixture;
 
@@ -178,4 +178,7 @@ public class UpdateCategoryApiTest
         output.Status.Should().Be((int)HttpStatusCode.UnprocessableEntity);
 
     }
+
+    public void Dispose()
+        => _fixture.CleanPersistence();
 }

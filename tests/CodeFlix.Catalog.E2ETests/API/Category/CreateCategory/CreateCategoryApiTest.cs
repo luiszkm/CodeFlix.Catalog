@@ -1,15 +1,13 @@
 ﻿using System.Net;
 using CodeFlix.Catalog.Application.UseCases.Category.Common;
 using CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
-using CodeFlix.Catalog.E2ETests.API.Category.Common;
 using CodeFlix.Catalog.E2ETests.API.Category.CreateCategory;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace CodeFlix.Catalog.E2ETests.API.CreateCategory;
 
 [Collection(nameof(CreateCategoryApiTestFixture))]
-public class CreateCategoryApiTest
+public class CreateCategoryApiTest : IDisposable
 {
     private readonly CreateCategoryApiTestFixture _fixture;
     public CreateCategoryApiTest(CreateCategoryApiTestFixture fixture)
@@ -74,4 +72,7 @@ public class CreateCategoryApiTest
         output.Status.Should().Be((int)HttpStatusCode.UnprocessableEntity);
 
     }
+
+    public void Dispose()
+        => _fixture.CleanPersistence();
 }

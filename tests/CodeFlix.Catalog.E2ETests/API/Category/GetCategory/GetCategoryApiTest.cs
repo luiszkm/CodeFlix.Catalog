@@ -9,7 +9,7 @@ namespace CodeFlix.Catalog.E2ETests.API.Category.GetCategory;
 
 
 [Collection(nameof(GetCategoryApiTestFixture))]
-public class GetCategoryApiTest
+public class GetCategoryApiTest : IDisposable
 {
     private readonly GetCategoryApiTestFixture _fixture;
 
@@ -65,4 +65,6 @@ public class GetCategoryApiTest
         output.Type.Should().Be("Not Found");
         output.Status.Should().Be((int)HttpStatusCode.NotFound);
     }
+    public void Dispose()
+        => _fixture.CleanPersistence();
 }

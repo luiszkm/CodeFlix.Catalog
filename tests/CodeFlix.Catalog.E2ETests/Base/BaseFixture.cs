@@ -28,6 +28,12 @@ namespace CodeFlix.Catalog.E2ETests.Base
             return context;
         }
 
+        public void CleanPersistence()
+        {
+            var context = CreateApiDbContext();
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+        }
 
     }
 }
