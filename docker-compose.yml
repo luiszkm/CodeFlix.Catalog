@@ -10,3 +10,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: catalogdb
+  
+    extra_hosts:
+    - "host.docker.internal:host-gateway"
