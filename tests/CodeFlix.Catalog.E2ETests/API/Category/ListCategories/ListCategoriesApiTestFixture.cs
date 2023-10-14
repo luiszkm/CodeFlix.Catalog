@@ -27,17 +27,18 @@ public class ListCategoriesApiTestFixture : CategoryBaseFixture
         var listClone = new List<DomainEntity.Category>(categoriesList);
         var orderedEnumerable = (orderBy, order) switch
         {
-            ("name", SearchOrder.Asc) => listClone.OrderBy(x => x.Name),
-            ("name", SearchOrder.Desc) => listClone.OrderByDescending(x => x.Name),
+            ("name", SearchOrder.Asc) => listClone.OrderBy(x => x.Name)
+                .ThenBy(x => x.Id),
+            ("name", SearchOrder.Desc) => listClone.OrderByDescending(x => x.Name)
+                .ThenByDescending(x => x.Id),
             ("id", SearchOrder.Asc) => listClone.OrderBy(x => x.Id),
             ("id", SearchOrder.Desc) => listClone.OrderByDescending(x => x.Id),
             ("createdAt", SearchOrder.Asc) => listClone.OrderBy(x => x.CreatedAt),
             ("createdAt", SearchOrder.Desc) => listClone.OrderByDescending(x => x.CreatedAt),
-            _ => listClone.OrderBy(x => x.Name),
+            _ => listClone.OrderBy(x => x.Name).ThenBy(x => x.Id),
         };
 
         return orderedEnumerable
-            .ThenBy(x => x.CreatedAt)
             .ToList();
     }
 }

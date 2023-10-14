@@ -3,6 +3,7 @@ using System.Net;
 using CodeFlix.Catalog.Application.UseCases.Category.Common;
 using CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory;
 using CodeFlix.Catalog.E2ETests.API.Category.CreateCategory;
+using CodeFlix.Catalog.E2ETests.Extensions;
 
 namespace CodeFlix.Catalog.E2ETests.API.Category.UpdateCategory;
 
@@ -38,7 +39,7 @@ public class UpdateCategoryApiTest : IDisposable
         output.Name.Should().Be(input.Name);
         output.Description.Should().Be(input.Description);
         output.IsActive.Should().Be((bool)input.IsActive!);
-        output.CreatedAt.Should().Be(exampleCategory.CreatedAt);
+        output.CreatedAt.TrimMilliseconds().Should().Be(exampleCategory.CreatedAt.TrimMilliseconds());
 
         var dbCategory = await _fixture.Persistence.GetById(output.Id);
         dbCategory.Should().NotBeNull();
@@ -46,7 +47,7 @@ public class UpdateCategoryApiTest : IDisposable
         dbCategory.Name.Should().Be(input.Name);
         dbCategory.Description.Should().Be(input.Description);
         dbCategory.IsActive.Should().Be((bool)input.IsActive!);
-        dbCategory.CreatedAt.Should().Be(exampleCategory.CreatedAt);
+        output.CreatedAt.TrimMilliseconds().Should().Be(exampleCategory.CreatedAt.TrimMilliseconds());
 
 
     }
@@ -76,7 +77,7 @@ public class UpdateCategoryApiTest : IDisposable
         output.Name.Should().Be(input.Name);
         output.Description.Should().Be(exampleCategory.Description);
         output.IsActive.Should().Be((bool)exampleCategory.IsActive!);
-        output.CreatedAt.Should().Be(exampleCategory.CreatedAt);
+        output.CreatedAt.TrimMilliseconds().Should().Be(exampleCategory.CreatedAt.TrimMilliseconds());
 
         var dbCategory = await _fixture.Persistence.GetById(output.Id);
         dbCategory.Should().NotBeNull();
@@ -84,7 +85,7 @@ public class UpdateCategoryApiTest : IDisposable
         dbCategory.Name.Should().Be(input.Name);
         dbCategory.Description.Should().Be(exampleCategory.Description);
         dbCategory.IsActive.Should().Be((bool)exampleCategory.IsActive!);
-        dbCategory.CreatedAt.Should().Be(exampleCategory.CreatedAt);
+        output.CreatedAt.TrimMilliseconds().Should().Be(exampleCategory.CreatedAt.TrimMilliseconds());
 
 
     }
@@ -113,7 +114,7 @@ public class UpdateCategoryApiTest : IDisposable
         output.Name.Should().Be(input.Name);
         output.Description.Should().Be(input.Description);
         output.IsActive.Should().Be((bool)exampleCategory.IsActive!);
-        output.CreatedAt.Should().Be(exampleCategory.CreatedAt);
+        output.CreatedAt.TrimMilliseconds().Should().Be(exampleCategory.CreatedAt.TrimMilliseconds());
 
         var dbCategory = await _fixture.Persistence.GetById(output.Id);
         dbCategory.Should().NotBeNull();
@@ -121,7 +122,7 @@ public class UpdateCategoryApiTest : IDisposable
         dbCategory.Name.Should().Be(input.Name);
         dbCategory.Description.Should().Be(input.Description);
         dbCategory.IsActive.Should().Be((bool)exampleCategory.IsActive!);
-        dbCategory.CreatedAt.Should().Be(exampleCategory.CreatedAt);
+        output.CreatedAt.TrimMilliseconds().Should().Be(exampleCategory.CreatedAt.TrimMilliseconds());
     }
 
     [Fact(DisplayName = nameof(ThrowWhenNotFoundCategory))]

@@ -1,6 +1,4 @@
 ﻿
-
-
 using CodeFlix.Catalog.Infra.Data.EF;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,19 +11,16 @@ where TStartup : class
     protected override void ConfigureWebHost(
         IWebHostBuilder builder)
     {
+        builder.UseEnvironment("E2ETest");
         builder.ConfigureServices(service =>
         {
-            var dboptions = service.FirstOrDefault(
-                   x => x.ServiceType == typeof(
-                       DbContextOptions<CodeflixCatalogDbContext>));
-
-            if (dboptions is not null) service.Remove(dboptions);
-
-            service.AddDbContext<CodeflixCatalogDbContext>(options =>
-            {
-                options.UseInMemoryDatabase("e2e-test-db");
-            });
-
+            var serviceProvider = service.BuildServiceProvider();
+            using var scope = serviceProvider.CreateScope();
+                var context = scope.ServiceProvider
+                    .GetService<CodeflixCatalogDbContext>();
+                ArgumentNullException.ThrowIfNull(context, nameof(context));
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
         });
         base.ConfigureWebHost(builder);
     }

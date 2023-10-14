@@ -2,18 +2,26 @@
 using CodeFlix.Catalog.Application.UseCases.Category.Common;
 using CodeFlix.Catalog.Application.UseCases.Category.ListCategories;
 using CodeFlix.Catalog.Domain.Domain.SeedWork.SearchableRepository;
+using CodeFlix.Catalog.E2ETests.Extensions;
 using Microsoft.AspNetCore.Http;
+using Xunit.Abstractions;
 
 namespace CodeFlix.Catalog.E2ETests.API.Category.ListCategories;
 
 [Collection(nameof(ListCategoriesApiTestFixture))]
 public class ListCategoriesApiTest : IDisposable
 {
-    public readonly ListCategoriesApiTestFixture _fixture;
-    public ListCategoriesApiTest(ListCategoriesApiTestFixture fixture)
+    private readonly ListCategoriesApiTestFixture _fixture;
+    private readonly ITestOutputHelper _output;
+
+    public ListCategoriesApiTest(
+        ListCategoriesApiTestFixture fixture,
+        ITestOutputHelper output)
     {
         _fixture = fixture;
+        _output = output;
     }
+
 
     [Fact(DisplayName = nameof(ListCategoriesByDefault))]
     [Trait("E2E/API", "Category/List - Endpoints")]
@@ -43,7 +51,7 @@ public class ListCategoriesApiTest : IDisposable
             outputItem.Name.Should().Be(expectedItem!.Name);
             outputItem.Description.Should().Be(expectedItem.Description);
             outputItem.IsActive.Should().Be(expectedItem.IsActive);
-            outputItem.CreatedAt.Should().Be(expectedItem.CreatedAt);
+            outputItem.CreatedAt.TrimMilliseconds().Should().Be(expectedItem.CreatedAt.TrimMilliseconds());
         }
     }
 
@@ -90,7 +98,7 @@ public class ListCategoriesApiTest : IDisposable
             outputItem.Name.Should().Be(expectedItem!.Name);
             outputItem.Description.Should().Be(expectedItem.Description);
             outputItem.IsActive.Should().Be(expectedItem.IsActive);
-            outputItem.CreatedAt.Should().Be(expectedItem.CreatedAt);
+            outputItem.CreatedAt.TrimMilliseconds().Should().Be(expectedItem.CreatedAt.TrimMilliseconds());
         }
     }
 
@@ -130,7 +138,7 @@ public class ListCategoriesApiTest : IDisposable
             outputItem.Name.Should().Be(expectedItem!.Name);
             outputItem.Description.Should().Be(expectedItem.Description);
             outputItem.IsActive.Should().Be(expectedItem.IsActive);
-            outputItem.CreatedAt.Should().Be(expectedItem.CreatedAt);
+            outputItem.CreatedAt.TrimMilliseconds().Should().Be(expectedItem.CreatedAt.TrimMilliseconds());
         }
     }
 
@@ -189,7 +197,7 @@ public class ListCategoriesApiTest : IDisposable
             outputItem.Name.Should().Be(expectedItem!.Name);
             outputItem.Description.Should().Be(expectedItem.Description);
             outputItem.IsActive.Should().Be(expectedItem.IsActive);
-            outputItem.CreatedAt.Should().Be(expectedItem.CreatedAt);
+            outputItem.CreatedAt.TrimMilliseconds().Should().Be(expectedItem.CreatedAt.TrimMilliseconds());
         }
     }
 
@@ -199,8 +207,7 @@ public class ListCategoriesApiTest : IDisposable
     [InlineData("name", "desc")]
     [InlineData("id", "asc")]
     [InlineData("id", "desc")]
-    [InlineData("createdAt", "asc")]
-    [InlineData("createdAt", "desc")]
+
 
     public async Task ListCategoriesOrdered(
         string orderBy,
@@ -245,6 +252,60 @@ public class ListCategoriesApiTest : IDisposable
             outputItem.Description.Should().Be(exampleItem.Description);
             outputItem.IsActive.Should().Be(exampleItem.IsActive);
         }
+    }
+
+    [Theory(DisplayName = nameof(ListCategoriesOrderedByDate))]
+    [Trait("EndToEnd/API", "Category/List - Endpoints")]
+    [InlineData("createdAt", "asc")]
+    [InlineData("createdAt", "desc")]
+
+    public async Task ListCategoriesOrderedByDate(
+        string orderBy,
+        string order)
+    {
+
+        var exampleCategoriesList = _fixture.GetExampleCategoriesList(10);
+        await _fixture.Persistence.InsertList(exampleCategoriesList);
+        var inputOrder = order == "asc" ? SearchOrder.Asc : SearchOrder.Desc;
+        var input = new ListCategoriesInput(
+            page: 1,
+            perPage: 20,
+            sort: orderBy,
+            dir: inputOrder
+        );
+
+        var (response, output) = await _fixture.
+            ApiClient.Get<ListCategoriesOutput>(
+                "/categories", input);
+
+        response.Should().NotBeNull();
+        response!.StatusCode.Should().Be((HttpStatusCode)StatusCodes.Status200OK);
+        output.Should().NotBeNull();
+        output!.PerPage.Should().Be(input.PerPage);
+        output.Page.Should().Be(input.Page);
+        output!.Total.Should().Be(exampleCategoriesList.Count);
+        output.Items.Should().HaveCount(exampleCategoriesList.Count);
+
+        DateTime? lastItemDate = null;
+
+        foreach (CategoryModelOutput outputItem in output.Items)
+        {
+            var expectedItem = exampleCategoriesList.First(x => x.Id == outputItem.Id);
+            expectedItem.Should().NotBeNull();
+            outputItem.Name.Should().Be(expectedItem!.Name);
+            outputItem.Description.Should().Be(expectedItem.Description);
+            outputItem.IsActive.Should().Be(expectedItem.IsActive);
+            outputItem.CreatedAt.TrimMilliseconds().Should()
+                .Be(expectedItem.CreatedAt.TrimMilliseconds());
+
+            if (lastItemDate != null)
+            {
+                if (order == "asc") Assert.True(outputItem.CreatedAt >= lastItemDate);
+                else Assert.True(outputItem.CreatedAt <= lastItemDate);
+            }
+            lastItemDate = outputItem.CreatedAt;
+        }
+
     }
     public void Dispose()
         => _fixture.CleanPersistence();
