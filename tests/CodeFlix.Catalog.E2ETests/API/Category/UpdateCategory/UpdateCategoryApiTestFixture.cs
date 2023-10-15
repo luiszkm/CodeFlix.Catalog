@@ -1,4 +1,5 @@
 ﻿
+using CodeFlix.Catalog.Api.ApiModels.Category;
 using CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory;
 using CodeFlix.Catalog.E2ETests.API.Category.Common;
 
@@ -9,14 +10,10 @@ public class UpdateCategoryApiTestFixtureCollection : ICollectionFixture<UpdateC
 public class UpdateCategoryApiTestFixture : CategoryBaseFixture
 {
 
-    public UpdateCategoryInput GetExampleInput(Guid? id = null)
-    {
-        return new UpdateCategoryInput(
-            id ?? Guid.NewGuid(),
+    public UpdateCategoryApiInput GetExampleInput(Guid? id = null)
+        => new(
             GetValidCategoryName(),
             GetValidCategoryDescription(),
             GetRandomBoolean()
-        );
-
-    }
+            );
 }

@@ -1,4 +1,6 @@
 ﻿using System.Net;
+using CodeFlix.Catalog.Api.ApiModels.Category;
+using CodeFlix.Catalog.Api.ApiModels.Response;
 using CodeFlix.Catalog.Application.UseCases.Category.Common;
 using CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
 using CodeFlix.Catalog.Application.UseCases.Category.DeleteCategory;
@@ -22,7 +24,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(CategoryModelOutput), (int)HttpStatusCode.Created)]
+    [ProducesResponseType(typeof(ApiResponse<CategoryModelOutput>), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.UnprocessableEntity)]
 
@@ -31,23 +33,27 @@ public class CategoriesController : ControllerBase
         CancellationToken cancellationToken)
     {
         var output = await _mediator.Send(input, cancellationToken);
+        var response = new ApiResponse<CategoryModelOutput>(output);
         return CreatedAtAction(
             nameof(Create),
             new { output.Id },
-            output);
+            response);
     }
 
+    //»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(typeof(IEnumerable<CategoryModelOutput>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ApiResponse<CategoryModelOutput>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> Get(
         [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
 
         var output = await _mediator.Send(new GetCategoryInput(id), cancellationToken);
-        return Ok(output);
+        var response = new ApiResponse<CategoryModelOutput>(output);
+        return Ok(response);
     }
-
+    //»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(typeof(IEnumerable<CategoryModelOutput>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Delete(
@@ -57,19 +63,27 @@ public class CategoriesController : ControllerBase
         await _mediator.Send(new DeleteCategoryInput(id), cancellationToken);
         return NoContent();
     }
-
+    //»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»
     [HttpPut("{id:guid}")]
-    [ProducesResponseType(typeof(CategoryModelOutput), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ApiResponse<CategoryModelOutput>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.UnprocessableEntity)]
     public async Task<IActionResult> Update(
-        [FromBody] UpdateCategoryInput input,
+        [FromBody] UpdateCategoryApiInput inputApi,
+        [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
-        var output = await _mediator.Send(input, cancellationToken);
-        return Ok(output);
-    }
+        var input = new UpdateCategoryInput(
+            id,
+            inputApi.Name,
+            inputApi.Description,
+            inputApi.IsActive);
 
+        var output = await _mediator.Send(input, cancellationToken);
+        var response = new ApiResponse<CategoryModelOutput>(output);
+        return Ok(response);
+    }
+    //»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»
     [HttpGet]
     [ProducesResponseType(typeof(CategoryModelOutput), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> List(
@@ -88,6 +102,8 @@ public class CategoriesController : ControllerBase
         if (dir is not null) input.Dir = dir.Value;
 
         var output = await _mediator.Send(input, cancellationToken);
-        return Ok(output);
+        var response = new ApiResponseList<CategoryModelOutput>(output);
+
+        return Ok(response);
     }
 }

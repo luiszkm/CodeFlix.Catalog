@@ -1,11 +1,13 @@
 ﻿
 
 using System.Net;
+using CodeFlix.Catalog.Api.ApiModels.Response;
 using CodeFlix.Catalog.Application.UseCases.Category.Common;
 using CodeFlix.Catalog.E2ETests.API.Category.CreateCategory;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CodeFlix.Catalog.E2ETests.API.Category.GetCategory;
+
 
 
 [Collection(nameof(GetCategoryApiTestFixture))]
@@ -29,17 +31,17 @@ public class GetCategoryApiTest : IDisposable
         var exampleCategory = exampleCategoriesList[10];
 
         var (response, output) = await _fixture.
-            ApiClient.Get<CategoryModelOutput>(
+            ApiClient.Get<ApiResponse<CategoryModelOutput>>(
                                $"/categories/{exampleCategory.Id}");
 
         response!.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Should().NotBeNull();
         output.Should().NotBeNull();
-        output!.Name.Should().Be(exampleCategory.Name);
-        output.Description.Should().Be(exampleCategory.Description);
-        output.IsActive.Should().Be(exampleCategory.IsActive);
-        output.Id.Should().Be(exampleCategory.Id);
-        output.CreatedAt.Should().BeSameDateAs(exampleCategory.CreatedAt);
+        output.Data!.Name.Should().Be(exampleCategory.Name);
+        output.Data.Description.Should().Be(exampleCategory.Description);
+        output.Data.IsActive.Should().Be(exampleCategory.IsActive);
+        output.Data.Id.Should().Be(exampleCategory.Id);
+        output.Data.CreatedAt.Should().BeSameDateAs(exampleCategory.CreatedAt);
     }
 
 
