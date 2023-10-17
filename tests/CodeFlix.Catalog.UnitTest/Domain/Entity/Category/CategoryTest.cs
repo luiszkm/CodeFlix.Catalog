@@ -1,7 +1,7 @@
 ﻿using CodeFlix.Catalog.Domain.Domain.Exceptions;
 using FluentAssertions;
 
-namespace CodeFlix.Catalog.UnitTest.Domain.Entity;
+namespace CodeFlix.Catalog.UnitTest.Domain.Entity.Category;
 
 [Collection(nameof(CategoryTestFixture))]
 public class CategoryTest
@@ -26,8 +26,8 @@ public class CategoryTest
         category.Should().NotBeNull();
         Assert.Equal(validCategory.Name, category.Name);
         Assert.Equal(validCategory.Description, category.Description);
-        Assert.NotEqual(default(Guid), category.Id);
-        Assert.NotEqual(default(DateTime), category.CreatedAt);
+        Assert.NotEqual(default, category.Id);
+        Assert.NotEqual(default, category.CreatedAt);
         Assert.True(category.CreatedAt >= dateTimeBefore);
         Assert.True(category.CreatedAt <= dateTimeAfter);
         Assert.True(category.IsActive);
@@ -52,8 +52,8 @@ public class CategoryTest
         Assert.NotNull(category);
         Assert.Equal(validCategory.Name, category.Name);
         Assert.Equal(validCategory.Description, category.Description);
-        Assert.NotEqual(default(Guid), category.Id);
-        Assert.NotEqual(default(DateTime), category.CreatedAt);
+        Assert.NotEqual(default, category.Id);
+        Assert.NotEqual(default, category.CreatedAt);
         Assert.True(category.CreatedAt >= dateTimeBefore);
         Assert.True(category.CreatedAt <= dateTimeAfter);
         Assert.Equal(isActive, category.IsActive);
@@ -110,7 +110,7 @@ public class CategoryTest
     public void InsatiateErrorWhitNameIsGreaterThan255Characters()
     {
         var validCategory = _categoryFixture.GetValidCategory();
-        var invalidName = String.Join(null, Enumerable.Range(0, 256).Select(_ => "a").ToArray());
+        var invalidName = string.Join(null, Enumerable.Range(0, 256).Select(_ => "a").ToArray());
 
         Action action =
              () => new DomainEntity.Category(invalidName, validCategory.Description);
@@ -126,7 +126,7 @@ public class CategoryTest
     public void InsatiateErrorWhitDescriptionIsGreaterThan255Characters()
     {
         var validCategory = _categoryFixture.GetValidCategory();
-        var invalidDescription = String.Join(null, Enumerable.Range(0, 10_001).Select(_ => "a").ToArray());
+        var invalidDescription = string.Join(null, Enumerable.Range(0, 10_001).Select(_ => "a").ToArray());
 
         Action action =
              () => new DomainEntity.Category(validCategory.Name, invalidDescription);
@@ -202,7 +202,7 @@ public class CategoryTest
     public void UpdateErrorWhitNameIsGreaterThan255Characters()
     {
         var validCategory = _categoryFixture.GetValidCategory();
-        var invalidName = String.Join(null, Enumerable.Range(0, 256).Select(_ => "a").ToArray());
+        var invalidName = string.Join(null, Enumerable.Range(0, 256).Select(_ => "a").ToArray());
 
         Action action =
              () => validCategory.Update(invalidName, validCategory.Description);
@@ -216,7 +216,7 @@ public class CategoryTest
     public void UpdateErrorWhitDescriptionIsGreaterThan10_000Characters()
     {
         var validCategory = _categoryFixture.GetValidCategory();
-        var invalidDescription = String.Join(null, Enumerable.Range(0, 10_001).Select(_ => "a").ToArray());
+        var invalidDescription = string.Join(null, Enumerable.Range(0, 10_001).Select(_ => "a").ToArray());
 
         Action action =
              () => validCategory.Update(validCategory.Name, invalidDescription);
