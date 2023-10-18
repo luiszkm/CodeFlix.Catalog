@@ -67,6 +67,11 @@ public class CategoryRepository : ICategoryRepository
         return new(input.Page, input.PerPage, total, items);
     }
 
+    public Task<IReadOnlyList<Guid>> GetIdsListByIds(List<Guid> ids, CancellationToken cancellation)
+    {
+        throw new NotImplementedException();
+    }
+
     private IQueryable<Category> AddOrderToQuery(
         IQueryable<Category> query,
         string orderBy,
