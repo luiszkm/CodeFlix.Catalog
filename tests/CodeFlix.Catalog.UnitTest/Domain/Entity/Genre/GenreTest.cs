@@ -20,6 +20,7 @@ public class GenreTest
         var genreName = "Horror";
         var dateTimeAfter = DateTime.Now.AddSeconds(1);
         var genre = new DomainEntity.Genre(genreName);
+        int a;
 
         genre.Should().NotBeNull();
         genre.Name.Should().Be(genreName);

@@ -17,8 +17,6 @@
 
   <ItemGroup>
     <Folder Include="UseCases\Genre\GetGenre\" />
-    <Folder Include="UseCases\Genre\DeleteGenre\" />
-    <Folder Include="UseCases\Genre\UpdateGenre\" />
   </ItemGroup>
 
 </Project>

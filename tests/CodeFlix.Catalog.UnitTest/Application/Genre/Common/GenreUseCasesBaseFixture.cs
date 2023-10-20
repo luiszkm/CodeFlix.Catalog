@@ -16,4 +16,9 @@ public class GenreUseCasesBaseFixture : BaseFixture
         => new();
     public string GetValidGenreName()
     => Faker.Commerce.Categories(1)[0];
+
+    public DomainEntity.Genre GetExampleGenre(bool? isActive = null)
+        => new(
+            GetValidGenreName(),
+            isActive ?? GetRandomBoolean());
 }
