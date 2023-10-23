@@ -1,4 +1,5 @@
-﻿using CodeFlix.Catalog.Application.Interfaces;
+﻿using CodeFlix.Catalog.Application.Exceptions;
+using CodeFlix.Catalog.Application.Interfaces;
 using CodeFlix.Catalog.Application.UseCases.Genre.Common;
 using CodeFlix.Catalog.Domain.Domain.Repository;
 using MediatR;
@@ -42,10 +43,42 @@ public class UpdateGenre : IRequestHandler<UpdateGenreInput, GenreModelOutput>
                 genre.Deactivate();
             }
         }
+        if (request.CategoriesIds is not null)
+        {
+            genre.RemoveAllCategories();
+            if (request.CategoriesIds.Count > 0)
+            {
+                await ValidateCategoriesIds(request, cancellationToken);
+                request.CategoriesIds?.ForEach(categoryId =>
+                    genre.AddCategory(categoryId));
+            }
+        }
+
+
         await _genreRepository.Update(genre, cancellationToken);
         await _unitOfWork.Commit(cancellationToken);
 
         return GenreModelOutput.FromGenre(genre);
+    }
 
+    private async Task ValidateCategoriesIds(
+        UpdateGenreInput request,
+        CancellationToken cancellationToken
+    )
+    {
+        var IdsInPersistence = await _categoryRepository
+            .GetIdsListByIds(
+                request.CategoriesIds!,
+                cancellationToken
+            );
+        if (IdsInPersistence.Count < request.CategoriesIds!.Count)
+        {
+            var notFoundIds = request.CategoriesIds
+                .FindAll(x => !IdsInPersistence.Contains(x));
+            var notFoundIdsAsString = string.Join(",", notFoundIds);
+            throw new RelatedAggregateException(
+                $"Related category id (or ids) not found: {notFoundIdsAsString}"
+            );
+        }
     }
 }

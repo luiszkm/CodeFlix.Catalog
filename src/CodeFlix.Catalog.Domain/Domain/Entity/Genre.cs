@@ -8,7 +8,9 @@ namespace CodeFlix.Catalog.Domain.Domain.Entity;
 public class Genre : AggregateRoot
 {
     public Genre(
-        string name, bool isActive = true)
+        string name,
+        bool isActive = true
+        )
     {
         Name = name;
         _categories = new List<Guid>();
