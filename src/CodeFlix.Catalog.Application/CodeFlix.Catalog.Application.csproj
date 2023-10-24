@@ -15,8 +15,4 @@
     <ProjectReference Include="..\CodeFlix.Catalog.Domain\CodeFlix.Catalog.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="UseCases\Genre\GetGenre\" />
-  </ItemGroup>
-
 </Project>
