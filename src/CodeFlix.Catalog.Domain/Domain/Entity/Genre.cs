@@ -1,13 +1,16 @@
 ﻿
 
+using CodeFlix.Catalog.Domain.Domain.SeedWork;
 using CodeFlix.Catalog.Domain.Domain.Validation;
 using System.Collections.Generic;
 
 namespace CodeFlix.Catalog.Domain.Domain.Entity;
-public class Genre
+public class Genre : AggregateRoot
 {
     public Genre(
-        string name, bool isActive = true)
+        string name,
+        bool isActive = true
+        )
     {
         Name = name;
         _categories = new List<Guid>();
