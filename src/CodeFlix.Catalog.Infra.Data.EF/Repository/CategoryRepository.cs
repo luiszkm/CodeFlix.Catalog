@@ -53,7 +53,7 @@ public class CategoryRepository : ICategoryRepository
         query = AddOrderToQuery(query, input.OrderBy, input.Order);
 
 
-        if (!String.IsNullOrWhiteSpace(input.Search))
+        if (!string.IsNullOrWhiteSpace(input.Search))
             query = query.Where(x => x.Name.Contains(input.Search));
 
 

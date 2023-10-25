@@ -38,4 +38,11 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Application\Genre\DeleteGenre\" />
+    <Folder Include="Application\Genre\GetGenre\" />
+    <Folder Include="Application\Genre\UpdateGenre\" />
+    <Folder Include="Application\Genre\CreateGenre\" />
+  </ItemGroup>
+
 </Project>
