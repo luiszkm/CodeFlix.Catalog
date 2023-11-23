@@ -1,8 +1,6 @@
 ﻿
 
-using CodeFlix.Catalog.Application.UseCases.Category.Common;
 using CodeFlix.Catalog.Domain.Domain.Repository;
-using CodeFlix.Catalog.Domain.Domain.SeedWork.SearchableRepository;
 using MediatR;
 
 namespace CodeFlix.Catalog.Application.UseCases.Genre.ListGenres;
@@ -17,13 +15,7 @@ public class ListGenres : IListGenres, IRequest<ListGenresOutput>
         (ListGenreInput request,
         CancellationToken cancellationToken)
     {
-        var searchInput = new SearchInput(
-            request.Page,
-            request.PerPage,
-            request.Search,
-            request.Sort,
-            request.Dir);
-
+        var searchInput = request.ToSearchInput();
         var searchOutput = await _genreRepository.Search(searchInput, cancellationToken);
 
         return ListGenresOutput.FromSearchOutput(searchOutput);

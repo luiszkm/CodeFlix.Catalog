@@ -1,5 +1,6 @@
 ﻿
 
+using CodeFlix.Catalog.Application.Common;
 using CodeFlix.Catalog.Application.UseCases.Category.Common;
 
 namespace CodeFlix.Catalog.Application.UseCases.Category.ListCategories;
