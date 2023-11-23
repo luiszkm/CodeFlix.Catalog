@@ -28,6 +28,7 @@ public class CategoryRepositoryTest : IDisposable
 
         var exampleCategory = _fixture.GetExampleCategory();
 
+
         var categoryRepository = new Repository.CategoryRepository(dbContext);
 
         await categoryRepository.Insert(exampleCategory, CancellationToken.None);
