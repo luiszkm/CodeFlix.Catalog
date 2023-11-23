@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeFlix.Catalog.Application.UseCases.Category.Common;
+namespace CodeFlix.Catalog.Application.Common;
 public abstract class PaginatedListOutput<TOutoutItem>
 {
     protected PaginatedListOutput(

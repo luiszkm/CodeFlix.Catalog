@@ -1,6 +1,6 @@
 ﻿using CodeFlix.Catalog.Domain.Domain.SeedWork.SearchableRepository;
 
-namespace CodeFlix.Catalog.Application.UseCases.Category.Common;
+namespace CodeFlix.Catalog.Application.Common;
 public abstract class PaginatedListInput
 {
     public PaginatedListInput(
@@ -24,5 +24,7 @@ public abstract class PaginatedListInput
     public SearchOrder Dir { get; set; }
 
 
+    public SearchInput ToSearchInput()
+    => new(Page, PerPage, Search, Sort, Dir);
 
 }
